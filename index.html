@@ -1,182 +1,63 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vexto Military Ride - FULL</title>  <style>
-    :root{
-      --green:#2f3b2f;
-      --accent:#7a9b76;
-      --bg:#0f1410;
-      --card:#1a221b;
-      --text:#e6e6e6;
-    }
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    body{margin:0;font-family:Arial;background:var(--bg);color:var(--text)}
+  <meta charset="UTF-8">
+  <title>App Militar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    header{
-      background:var(--green);
-      padding:15px;
-      text-align:center;
-      font-weight:bold;
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f1a10;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
 
-    .container{max-width:900px;margin:auto;padding:15px}
-
-    .card{background:var(--card);padding:15px;border-radius:12px;margin-bottom:15px}
-
-    input,button{
-      width:100%;padding:10px;margin-top:8px;border-radius:8px;border:none
+    input {
+      margin: 5px;
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: none;
     }
 
-    button{background:var(--accent);font-weight:bold;cursor:pointer}
-
-    .hidden{display:none}
-
-    .ride{padding:10px;border-bottom:1px solid #333}
-
-    .row{display:flex;gap:10px}
-  </style></head><body><header>🚗 VEXT0 MILITARY RIDE FULL SYSTEM</header><div class="container">  <!-- LOGIN -->  <div id="auth" class="card">
-    <h3>Login / Registro</h3>
-    <input id="email" placeholder="Email" />
-    <input id="pass" type="password" placeholder="Password" />
-    <button onclick="register()">Registrarse</button>
-    <button onclick="login()">Entrar</button>
-  </div>  <!-- DASHBOARD -->  <div id="app" class="hidden"><div class="card">
-  <h3>Usuario</h3>
-  <p id="userInfo"></p>
-  <button onclick="logout()">Salir</button>
-</div>
-
-<!-- PASAJERO -->
-<div id="passengerPanel" class="card hidden">
-  <h3>🚕 Pedir viaje</h3>
-  <input id="from" placeholder="Origen" />
-  <input id="to" placeholder="Destino" />
-  <button onclick="createRide()">Solicitar viaje</button>
-</div>
-
-<!-- CONDUCTOR -->
-<div id="driverPanel" class="card hidden">
-  <h3>🚗 Viajes disponibles</h3>
-  <div id="rides"></div>
-</div>
-
-  </div></div><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_BUCKET",
-  messagingSenderId: "TU_SENDER",
-  appId: "TU_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let currentUser = null;
-let userRole = null;
-
-// AUTH
-window.register = async () => {
-  const email = email.value;
-  const pass = document.getElementById("pass").value;
-
-  const res = await createUserWithEmailAndPassword(auth, email, pass);
-
-  await setDoc(doc(db,"users",res.user.uid),{
-    email,
-    role:"passenger",
-    verified:true
-  });
-};
-
-window.login = async () => {
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
-  await signInWithEmailAndPassword(auth,email,pass);
-};
-
-window.logout = async () => {
-  await signOut(auth);
-};
-
-// AUTH STATE
-onAuthStateChanged(auth, async (user)=>{
-  if(user){
-    currentUser = user;
-
-    const snap = await getDoc(doc(db,"users",user.uid));
-    userRole = snap.data().role;
-
-    document.getElementById("auth").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-
-    document.getElementById("userInfo").innerText = user.email + " - " + userRole;
-
-    if(userRole === "passenger"){
-      document.getElementById("passengerPanel").classList.remove("hidden");
+    button {
+      margin: 5px;
+      padding: 10px;
+      width: 250px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
 
-    if(userRole === "driver"){
-      document.getElementById("driverPanel").classList.remove("hidden");
-      loadRides();
+    button:hover {
+      background: #1b5e20;
     }
+  </style>
+</head>
 
-  } else {
-    currentUser = null;
-    document.getElementById("auth").classList.remove("hidden");
-    document.getElementById("app").classList.add("hidden");
-  }
-});
+<body>
 
-// CREATE RIDE
-window.createRide = async () => {
-  await addDoc(collection(db,"rides"),{
-    from:document.getElementById("from").value,
-    to:document.getElementById("to").value,
-    passengerId:currentUser.uid,
-    driverId:null,
-    status:"pending",
-    createdAt:new Date()
-  });
-};
+  <h2>Acceso Militar</h2>
 
-// LOAD RIDES
-function loadRides(){
-  const box = document.getElementById("rides");
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Contraseña">
 
-  onSnapshot(collection(db,"rides"),(snap)=>{
-    box.innerHTML="";
+  <button id="registerBtn">Registrarse</button>
+  <button id="loginBtn">Ingresar</button>
 
-    snap.forEach(d=>{
-      const r = d.data();
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
-      if(r.status === "pending"){
-        box.innerHTML += `
-          <div class='ride'>
-            <b>${r.from}</b> → ${r.to}<br/>
-            <button onclick="acceptRide('${d.id}')">Aceptar</button>
-          </div>
-        `;
-      }
-    });
-  });
-}
+  <!-- App -->
+  <script src="app.js"></script>
 
-// ACCEPT RIDE
-window.acceptRide = async (id) => {
-  await updateDoc(doc(db,"rides",id),{
-    driverId:currentUser.uid,
-    status:"accepted"
-  });
-};
-
-</script></body>
+</body>
 </html>
