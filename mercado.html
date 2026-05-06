@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mercado — BASE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem("user")) {
+    window.location.href = "login.html";
+  }
+</script>
+
+<h1>Mercado BASE</h1>
+
+<input placeholder="Buscar por provincia o unidad">
+
+<div class="listing-card">
+  <h3>Notebook Dell</h3>
+  <p>Córdoba — RA 143</p>
+  <button onclick="alert('Chat en demo')">Contactar</button>
+</div>
+
+<div class="listing-card">
+  <h3>Celular Samsung</h3>
+  <p>Buenos Aires — Campo de Mayo</p>
+  <button onclick="alert('Chat en demo')">Contactar</button>
+</div>
+
+<a href="index.html">⬅ Volver</a>
+
+</body>
+</html>
