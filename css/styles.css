@@ -1,6 +1,7 @@
+
 body {
   font-family: Arial, sans-serif;
-  background: #0e1a2b;
+  background: linear-gradient(135deg, #0e1a2b, #162b4d);
   color: #ffffff;
   margin: 0;
   padding: 20px;
@@ -8,10 +9,21 @@ body {
 
 h1 {
   color: #00c2ff;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-a {
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+}
+
+a, button {
   display: block;
+  width: 100%;
   margin: 10px 0;
   padding: 12px;
   background: #00c2ff;
@@ -19,4 +31,13 @@ a {
   text-align: center;
   border-radius: 8px;
   text-decoration: none;
+  border: none;
+  font-weight: bold;
+}
+
+.listing-card {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
 }
