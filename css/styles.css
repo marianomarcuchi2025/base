@@ -1,16 +1,16 @@
-
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0e1a2b, #162b4d);
-  color: #ffffff;
+  background: linear-gradient(135deg, #0b1f14, #14281d);
+  color: #e6f2e6;
   margin: 0;
   padding: 20px;
 }
 
 h1 {
-  color: #00c2ff;
+  color: #7CFC98;
   text-align: center;
   margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
 input {
@@ -18,7 +18,13 @@ input {
   padding: 12px;
   margin: 10px 0;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #2f5e3f;
+  background: #0f2a1c;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #a8c7b0;
 }
 
 a, button {
@@ -26,18 +32,24 @@ a, button {
   width: 100%;
   margin: 10px 0;
   padding: 12px;
-  background: #00c2ff;
-  color: #000;
+  background: #2e7d4f;
+  color: #ffffff;
   text-align: center;
   border-radius: 8px;
   text-decoration: none;
   border: none;
   font-weight: bold;
+  transition: 0.2s;
+}
+
+a:hover, button:hover {
+  background: #3fa96a;
 }
 
 .listing-card {
-  background: rgba(255,255,255,0.1);
+  background: rgba(46, 125, 79, 0.15);
   padding: 15px;
   margin: 10px 0;
   border-radius: 10px;
+  border: 1px solid #2e7d4f;
 }
