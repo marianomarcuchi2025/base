@@ -15,5 +15,9 @@
 <a href="mercado.html">Mercado</a>
 <a href="movilidad.html">Movilidad</a>
 
-</body>
+</body><script>
+  if (!localStorage.getItem("user")) {
+    window.location.href = "login.html";
+  }
+</script>
 </html>
