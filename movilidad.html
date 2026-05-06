@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Movilidad — BASE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem("user")) {
+    window.location.href = "login.html";
+  }
+</script>
+
+<h1>Movilidad BASE</h1>
+
+<div class="listing-card">
+  <h3>Córdoba → Buenos Aires</h3>
+  <p>Fecha: 15/06 — Lugares: 2</p>
+  <p>Conductor: Suboficial EA ⭐ 4.8</p>
+  <button onclick="alert('Chat en demo')">Consultar</button>
+</div>
+
+<small>BASE no presta servicios de transporte. Conecta miembros.</small>
+
+<a href="index.html">⬅ Volver</a>
+
+</body>
+</html>
