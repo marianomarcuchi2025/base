@@ -1,4 +1,12 @@
-let viajes = [];
+const firebaseConfig = {
+  apiKey: "XXXX",
+  authDomain: "XXXX.firebaseapp.com",
+  projectId: "XXXX",
+  storageBucket: "XXXX",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+}
+  let viajes = [];
 
 function solicitarViaje() {
   const origen = document.getElementById("origen").value;
