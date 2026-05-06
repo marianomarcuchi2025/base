@@ -1,71 +1,71 @@
-firebase.initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+// ===============================
+// 1. FIREBASE IMPORTS
+// ===============================
+import { initializeApp } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
+
+// ===============================
+// 2. CONFIG FIREBASE (REEMPLAZAR DATOS)
+// ===============================
 const firebaseConfig = {
-  apiKey: "XXXX",
-  authDomain: "XXXX.firebaseapp.com",
-  projectId: "XXXX",
-  storageBucket: "XXXX",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
-}
-  let viajes = [];
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_STORAGE_BUCKET",
+  messagingSenderId: "TU_MESSAGING_SENDER_ID",
+  appId: "TU_APP_ID"
+};
 
-function solicitarViaje() {
-  const origen = document.getElementById("origen").value;
-  const destino = document.getElementById("destino").value;
 
-  if (!origen || !destino) {
-    alert("Completa origen y destino");
-    return;
-  }
+// ===============================
+// 3. INICIALIZAR FIREBASE
+// ===============================
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  const viaje = {
-    id: Date.now(),
-    origen,
-    destino,
-    estado: "pendiente"
-  };
 
-  viajes.push(viaje);
+// ===============================
+// 4. REGISTRO DE USUARIO
+// ===============================
+const registerBtn = document.getElementById("registerBtn");
 
-  mostrarViajes();
-}
+if (registerBtn) {
+  registerBtn.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-function mostrarViajes() {
-  const lista = document.getElementById("listaViajes");
-  lista.innerHTML = "";
-
-  viajes.forEach(v => {
-    lista.innerHTML += `
-      <div class="card">
-        🚗 Viaje #${v.id}<br>
-        📍 ${v.origen} → ${v.destino}<br>
-        📦 Estado: ${v.estado}
-      </div>
-    `;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        alert("Usuario creado correctamente: " + userCredential.user.email);
+      })
+      .catch((error) => {
+        alert("Error registro: " + error.message);
+      });
   });
 }
-db.collection("viajes").onSnapshot(snapshot => {
-  const lista = document.getElementById("listaViajes");
-  lista.innerHTML = "";
 
-  snapshot.forEach(doc => {
-    const v = doc.data();
 
-    lista.innerHTML += `
-      <div class="card">
-        🚗 ${v.origen} → ${v.destino}<br>
-        📦 Estado: ${v.estado}<br>
-        <button onclick="aceptar('${doc.id}')">Aceptar</button>
-      </div>
-    `;
-  });
-});
+// ===============================
+// 5. LOGIN DE USUARIO
+// ===============================
+const loginBtn = document.getElementById("loginBtn");
 
-function aceptar(id) {
-  db.collection("viajes").doc(id).update({
-    estado: "en curso"
+if (loginBtn) {
+  loginBtn.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        alert("Bienvenido " + userCredential.user.email);
+
+        // Redirigir a dashboard
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        alert("Error login: " + error.message);
+      });
   });
 }
