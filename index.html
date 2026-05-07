@@ -1,31 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Militar Ride</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Militar Ride PRO</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background: linear-gradient(135deg,#0b1f14,#111);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card{
+  background:#14261b;
+  padding:25px;
+  border-radius:12px;
+  width:300px;
+  box-shadow:0 0 15px rgba(0,255,100,0.2);
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:6px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  background:#2e7d32;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{background:#1b5e20;}
+h2{text-align:center;}
+</style>
 </head>
 
-<body style="background:#0f1a10;color:white;text-align:center;padding-top:80px;">
+<body>
 
-  <h2>Acceso Militar</h2>
+<div class="card">
+  <h2>ACCESO MILITAR</h2>
 
-  <input id="email" placeholder="Email"><br><br>
-  <input id="password" type="password" placeholder="Contraseña"><br><br>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Contraseña">
 
   <select id="role">
     <option value="cliente">Cliente</option>
     <option value="conductor">Conductor</option>
-  </select><br><br>
+  </select>
 
   <button id="registerBtn">Registrarse</button>
   <button id="loginBtn">Ingresar</button>
+</div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-  <script src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
