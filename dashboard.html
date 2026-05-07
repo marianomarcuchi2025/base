@@ -1,80 +1,47 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Militar Ride PRO</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0f1a10;
-  color:white;
-}
-
-header{
-  background:#1b3a25;
-  padding:15px;
-  text-align:center;
-  font-weight:bold;
-}
-
-.container{
-  padding:20px;
-}
-
-.card{
-  background:#14261b;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-}
-
-button{
-  background:#2e7d32;
-  color:white;
-  border:none;
-  padding:10px;
-  width:100%;
-  margin-top:5px;
-  border-radius:6px;
-}
-
-.trip{
-  background:#1b2f22;
-  padding:10px;
-  margin:5px 0;
-  border-radius:6px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Militar Ride PRO</title>
+  <style>
+    body { margin:0; font-family:Arial; }
+    #map { height: 60vh; width: 100%; }
+    .panel {
+      padding:15px;
+      background:#0f1a10;
+      color:white;
+    }
+    button {
+      padding:10px;
+      margin:5px;
+      background:#2e7d32;
+      color:white;
+      border:none;
+      width:100%;
+    }
+    input {
+      width:100%;
+      padding:8px;
+      margin:5px 0;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  MILITAR RIDE PRO
-</header>
+<div id="map"></div>
 
-<div class="container">
+<div class="panel">
+  <h3>Solicitar viaje</h3>
 
-  <div id="clientePanel" class="card">
-    <h3>Pedir viaje</h3>
-    <input id="origen" placeholder="Origen">
-    <input id="destino" placeholder="Destino">
-    <button id="pedirViaje">Solicitar viaje</button>
-  </div>
+  <input id="destino" placeholder="Destino">
 
-  <h3>Viajes en tiempo real</h3>
-  <div id="viajes"></div>
+  <button onclick="crearViaje()">Pedir viaje</button>
 
-  <button onclick="logout()">Cerrar sesión</button>
+  <h3>Estado</h3>
+  <div id="estado">Esperando...</div>
 
+  <button onclick="logout()">Salir</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -82,6 +49,36 @@ button{
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script src="app.js"></script>
+
+<script>
+let map;
+let marker;
+
+function initMap(){
+  navigator.geolocation.getCurrentPosition(pos => {
+
+    const userPos = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude
+    };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: userPos,
+      zoom: 15
+    });
+
+    marker = new google.maps.Marker({
+      position: userPos,
+      map: map
+    });
+
+  });
+}
+</script>
+
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap">
+</script>
 
 </body>
 </html>
