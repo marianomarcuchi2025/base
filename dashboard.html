@@ -1,33 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard Militar</title>
+<meta charset="UTF-8">
+<title>Militar Ride PRO</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f1a10;
+  color:white;
+}
+
+header{
+  background:#1b3a25;
+  padding:15px;
+  text-align:center;
+  font-weight:bold;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:#14261b;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+}
+
+button{
+  background:#2e7d32;
+  color:white;
+  border:none;
+  padding:10px;
+  width:100%;
+  margin-top:5px;
+  border-radius:6px;
+}
+
+.trip{
+  background:#1b2f22;
+  padding:10px;
+  margin:5px 0;
+  border-radius:6px;
+}
+</style>
 </head>
 
-<body style="background:#111;color:white;text-align:center;padding-top:40px;">
+<body>
 
-  <h2>Panel Militar</h2>
+<header>
+  MILITAR RIDE PRO
+</header>
 
-  <div id="clientePanel">
+<div class="container">
+
+  <div id="clientePanel" class="card">
     <h3>Pedir viaje</h3>
-    <input id="origen" placeholder="Origen"><br><br>
-    <input id="destino" placeholder="Destino"><br><br>
-    <button id="pedirViaje">Solicitar</button>
+    <input id="origen" placeholder="Origen">
+    <input id="destino" placeholder="Destino">
+    <button id="pedirViaje">Solicitar viaje</button>
   </div>
 
-  <hr>
-
-  <h3>Viajes disponibles</h3>
+  <h3>Viajes en tiempo real</h3>
   <div id="viajes"></div>
 
-  <button onclick="logout()">Salir</button>
+  <button onclick="logout()">Cerrar sesión</button>
 
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</div>
 
-  <script src="app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script src="app.js"></script>
 
 </body>
 </html>
