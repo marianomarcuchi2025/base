@@ -1,3 +1,4 @@
+// ================= FIREBASE =================
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
   authDomain: "TU_AUTH_DOMAIN",
@@ -12,7 +13,42 @@ const db = firebase.firestore();
 let currentUser = null;
 
 
-// ================= LOGIN STATE =================
+// ================= REGISTRO =================
+document.getElementById("registerBtn")?.addEventListener("click", () => {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(user => {
+
+      db.collection("users").doc(user.user.uid).set({
+        email,
+        role
+      });
+
+      alert("Usuario creado");
+    })
+    .catch(e => alert(e.message));
+});
+
+
+// ================= LOGIN =================
+document.getElementById("loginBtn")?.addEventListener("click", () => {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      window.location.href = "dashboard.html";
+    })
+    .catch(e => alert(e.message));
+});
+
+
+// ================= AUTH =================
 auth.onAuthStateChanged(user => {
   if (!user) return;
   currentUser = user;
@@ -37,47 +73,27 @@ function crearViaje() {
       createdAt: new Date()
     });
 
-    document.getElementById("estado").innerText = "Viaje solicitado";
+    document.getElementById("estado").innerText =
+      "Viaje solicitado ✔";
 
   });
 }
 
 
 // ================= ESCUCHAR VIAJES =================
-db.collection("trips")
-  .where("userId", "==", null)
-  .onSnapshot(snapshot => {
+db.collection("trips").onSnapshot(snapshot => {
 
-    snapshot.forEach(doc => {
+  snapshot.forEach(doc => {
 
-      const t = doc.data();
+    const t = doc.data();
 
+    if (t.userId === currentUser?.uid) {
       document.getElementById("estado").innerText =
         "Estado: " + t.status;
-
-    });
+    }
 
   });
 
-
-// ================= LOGIN =================
-document.getElementById("loginBtn")?.addEventListener("click", () => {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => window.location.href = "dashboard.html");
-});
-
-
-// ================= REGISTRO =================
-document.getElementById("registerBtn")?.addEventListener("click", () => {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.createUserWithEmailAndPassword(email, password);
 });
 
 
