@@ -1,30 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Militar Ride PRO</title>
-  <style>
-    body { margin:0; font-family:Arial; }
-    #map { height: 60vh; width: 100%; }
-    .panel {
-      padding:15px;
-      background:#0f1a10;
-      color:white;
-    }
-    button {
-      padding:10px;
-      margin:5px;
-      background:#2e7d32;
-      color:white;
-      border:none;
-      width:100%;
-    }
-    input {
-      width:100%;
-      padding:8px;
-      margin:5px 0;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Militar Ride PRO</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+body { margin:0; font-family:Arial; }
+#map { height: 60vh; }
+.panel {
+  padding:15px;
+  background:#0f1a10;
+  color:white;
+}
+input, button {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+}
+button {
+  background:#2e7d32;
+  color:white;
+  border:none;
+}
+.trip {
+  background:#1b2f22;
+  padding:10px;
+  margin:5px 0;
+}
+</style>
 </head>
 
 <body>
@@ -32,18 +37,20 @@
 <div id="map"></div>
 
 <div class="panel">
+
   <h3>Solicitar viaje</h3>
 
   <input id="destino" placeholder="Destino">
-
   <button onclick="crearViaje()">Pedir viaje</button>
 
   <h3>Estado</h3>
   <div id="estado">Esperando...</div>
 
   <button onclick="logout()">Salir</button>
+
 </div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -53,31 +60,28 @@
 <script>
 let map;
 let marker;
+let userPos;
 
-function initMap(){
+// ================= MAPA =================
+function initMap() {
+
   navigator.geolocation.getCurrentPosition(pos => {
 
-    const userPos = {
-      lat: pos.coords.latitude,
-      lng: pos.coords.longitude
-    };
+    userPos = [pos.coords.latitude, pos.coords.longitude];
 
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: userPos,
-      zoom: 15
-    });
+    map = L.map('map').setView(userPos, 15);
 
-    marker = new google.maps.Marker({
-      position: userPos,
-      map: map
-    });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'OpenStreetMap'
+    }).addTo(map);
+
+    marker = L.marker(userPos).addTo(map)
+      .bindPopup("Tu ubicación").openPopup();
 
   });
 }
-</script>
 
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap">
+initMap();
 </script>
 
 </body>
