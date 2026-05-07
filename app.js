@@ -1,104 +1,21 @@
-// ================= FIREBASE =================
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID",
+  apiKey: "AIzaSyBDxRTdgRsVeuvsdeaeqUU2XD31EhM8KMM",
+  authDomain: "uber-militar.firebaseapp.com",
+  projectId: "uber-militar",
+  storageBucket: "uber-militar.firebasestorage.app",
+  messagingSenderId: "592330471995",
+  appId: "1:592330471995:web:faa9a0109fd870644e7a1e",
+  measurementId: "G-NW11J0GHLD"
 };
 
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-let currentUser = null;
-
-
-// ================= REGISTRO =================
-document.getElementById("registerBtn")?.addEventListener("click", () => {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const role = document.getElementById("role").value;
-
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(user => {
-
-      db.collection("users").doc(user.user.uid).set({
-        email,
-        role
-      });
-
-      alert("Usuario creado");
-    })
-    .catch(e => alert(e.message));
-});
-
-
-// ================= LOGIN =================
-document.getElementById("loginBtn")?.addEventListener("click", () => {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      window.location.href = "dashboard.html";
-    })
-    .catch(e => alert(e.message));
-});
-
-
-// ================= AUTH =================
-auth.onAuthStateChanged(user => {
-  if (!user) return;
-  currentUser = user;
-});
-
-
-// ================= CREAR VIAJE =================
-function crearViaje() {
-
-  const destino = document.getElementById("destino").value;
-
-  navigator.geolocation.getCurrentPosition(pos => {
-
-    db.collection("trips").add({
-      userId: currentUser.uid,
-      destino,
-      origen: {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      },
-      status: "pendiente",
-      createdAt: new Date()
-    });
-
-    document.getElementById("estado").innerText =
-      "Viaje solicitado ✔";
-
-  });
-}
-
-
-// ================= ESCUCHAR VIAJES =================
-db.collection("trips").onSnapshot(snapshot => {
-
-  snapshot.forEach(doc => {
-
-    const t = doc.data();
-
-    if (t.userId === currentUser?.uid) {
-      document.getElementById("estado").innerText =
-        "Estado: " + t.status;
-    }
-
-  });
-
-});
-
-
-// ================= LOGOUT =================
-function logout() {
-  auth.signOut();
-  window.location.href = "index.html";
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
