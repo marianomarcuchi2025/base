@@ -11,6 +11,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 let currentUser = null;
+let userRole = null;
+
 
 // ================= REGISTRO =================
 document.getElementById("registerBtn")?.addEventListener("click", () => {
@@ -19,16 +21,22 @@ document.getElementById("registerBtn")?.addEventListener("click", () => {
   const password = document.getElementById("password").value;
   const role = document.getElementById("role").value;
 
+  if (!email || !password) {
+    alert("Completa los campos");
+    return;
+  }
+
   auth.createUserWithEmailAndPassword(email, password)
-    .then((user) => {
+    .then(user => {
 
       db.collection("users").doc(user.user.uid).set({
-        email,
-        role
+        email: email,
+        role: role
       });
 
-      alert("Usuario creado");
-    });
+      alert("Usuario creado correctamente");
+    })
+    .catch(err => alert(err.message));
 });
 
 
@@ -39,28 +47,26 @@ document.getElementById("loginBtn")?.addEventListener("click", () => {
   const password = document.getElementById("password").value;
 
   auth.signInWithEmailAndPassword(email, password)
-    .then((user) => {
+    .then(() => {
       window.location.href = "dashboard.html";
-    });
+    })
+    .catch(err => alert(err.message));
 });
 
 
-// ================= CHECK USER =================
-auth.onAuthStateChanged(async (user) => {
+// ================= AUTH STATE =================
+auth.onAuthStateChanged(async user => {
 
   if (!user) return;
 
   currentUser = user;
 
   const doc = await db.collection("users").doc(user.uid).get();
-  const role = doc.data().role;
 
-  // CLIENTE
-  if (role === "cliente") {
-    document.getElementById("clientePanel").style.display = "block";
+  if (doc.exists) {
+    userRole = doc.data().role;
   }
 
-  // Cargar viajes
   loadTrips();
 });
 
@@ -71,23 +77,31 @@ document.getElementById("pedirViaje")?.addEventListener("click", () => {
   const origen = document.getElementById("origen").value;
   const destino = document.getElementById("destino").value;
 
+  if (!origen || !destino) {
+    alert("Completa origen y destino");
+    return;
+  }
+
   db.collection("trips").add({
-    origen,
-    destino,
+    origen: origen,
+    destino: destino,
     status: "pendiente",
-    userId: currentUser.uid
+    userId: currentUser.uid,
+    createdAt: new Date()
   });
 
   alert("Viaje solicitado");
 });
 
 
-// ================= VER VIAJES =================
+// ================= CARGAR VIAJES =================
 function loadTrips() {
 
   const div = document.getElementById("viajes");
+  if (!div) return;
 
   db.collection("trips")
+    .orderBy("createdAt", "desc")
     .onSnapshot(snapshot => {
 
       div.innerHTML = "";
@@ -96,10 +110,19 @@ function loadTrips() {
         const t = doc.data();
 
         div.innerHTML += `
-          <p>
-            ${t.origen} → ${t.destino} | ${t.status}
-            <button onclick="aceptar('${doc.id}')">Aceptar</button>
-          </p>
+          <div style="
+            background:#1b2f22;
+            padding:10px;
+            margin:8px 0;
+            border-radius:8px;
+          ">
+            🚗 ${t.origen} → ${t.destino}<br>
+            📌 Estado: ${t.status}
+            <br><br>
+            <button onclick="aceptar('${doc.id}')">
+              Aceptar viaje
+            </button>
+          </div>
         `;
       });
     });
@@ -108,6 +131,7 @@ function loadTrips() {
 
 // ================= ACEPTAR VIAJE =================
 function aceptar(id) {
+
   db.collection("trips").doc(id).update({
     status: "aceptado"
   });
